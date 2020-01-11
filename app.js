@@ -6,7 +6,7 @@ notes = require('./notes.js'),
 httpStatus = require('http-status-codes'),
 yargs = require('yargs');
 
-yargs.version('15.1.0');
+yargs.version('1.1.0');
 
 
 const MongoDB = require('mongodb').MongoClient, 
@@ -39,6 +39,10 @@ app.get('/profile/:id', (req, res) => {
 
     res.send('testing ' + req.params.id)
 })
+
+
+
+
 
 
 
