@@ -21,7 +21,7 @@ MongoDB.connect(dbURL, (error,client) => {
     .find()
     .toArray((error, data) => {
 
-        //console.log(data);
+        console.log(data);
     })
 
 })
