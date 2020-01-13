@@ -1,14 +1,24 @@
-// const mongoose = require('mongoose');
-// 7
-// mongoose.connect('mongodb://localhost:27017/recipe_db', 
-// {
+const mongoose = require('mongoose');
 
-//     useNewUrlParser: true
-// });
+mongoose.connect('mongodb://localhost:27017/recipe_db', 
+{
 
-// const db = mongoose.connection; 
+    useNewUrlParser: true
+});
 
-// db.once('open', () => {
+const db = mongoose.connection; 
 
-//     console.once('connect to mongodb');
-// })
+db.once('open', () => {
+
+    console.once('connect to mongodb');
+})
+
+
+var myQuery = Subscriber.findOne({
+
+    name: 'Donta White'
+}).where('email',/donta/);
+
+myQuery.exec((error,data) => {
+    if (data) console.log(data.name)
+})

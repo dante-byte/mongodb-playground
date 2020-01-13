@@ -2,62 +2,51 @@ const express = require('express'),
 app = express(),
 ejs =  require('ejs'),
 layouts = require('express-ejs-layouts'),
+errorController = require("./controllers/errorController"),
+homeController = require("./controllers/homeController"),
 notes = require('./notes.js'),
-httpStatus = require('http-status-codes'),
 yargs = require('yargs');
 yargs.version('1.1.0'),
-mongoose = require('mongoose');
+mongoose = require('mongoose'),
+subscribersController = require('./controllers/subscribersController'),
+db = mongoose.connection;
+Subscriber = require('./models/subscriber_db');
 //create database mongoose 
-mongoose.connect('mongodb://localhost:27017/recipe_db',{useNewUrlParser: true});
-const db = mongoose.connection;
-db.once('open', () => {
-    console.log('success');
-})
+mongoose.connect('mongodb://localhost:27017/recipe_db',
 
-
-const subscribeSchema = mongoose.Schema({ //a defined schema 
-
-    name: String,
-    email: String,
-    zipCode: Number
-
-});
-
-const Subscriber = mongoose.model('Subscriber', subscribeSchema); //model use to instantiate new subscribers 
-
-
-var subscriber1 = new Subscriber({ // object of type subscriber
-name: 'Donta White',
-email: 'donta@email.com'
-});
-
-subscriber1.save((error, saveDocument) => { //saving to database 
-
-    if (error) console.log(error); // pass potential errors to the next middleware function 
-    console.log(saveDocument)//log saved data document 
-})
-
-
-
-Subscriber.create( // another way to save user 
     {
-        name: "Jonh Doe",
-        email: "johndoe@email.com"
-
-    },
-
-    (error,saveDocument) => {
-
-        if (error) console.log(error);
-        console.log(saveDocument);
+        useNewUrlParser: true
     }
-)
-
-
-
-
-
+);
+db.once('open', () => {
+    console.log(`database connected on port 27017`);
+})
 app.set("port", process.env.PORT || 3000);
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(layouts);
+app.use(
+  express.urlencoded({
+    extended: false
+  })
+);
+app.use(express.json());
+
+
+
+
+
+
+app.get('/subscribers', subscribersController.getAllSubscribers, (req, res, next) => {
+
+    console.log(req.data);
+
+   // res.send(req.data);
+
+    res.render('subscribers', {
+        subscribers: req.data
+    })
+})
 
 app.listen(3000,()=> {
 console.log(`server started on port ${app.get("port")}`); 
