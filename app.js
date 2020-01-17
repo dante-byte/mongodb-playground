@@ -12,6 +12,7 @@ subscribersController = require('./controllers/subscribersController'),
 db = mongoose.connection;
 Subscriber = require('./models/subscriber_db');
 //create database mongoose 
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/recipe_db',
 
     {
@@ -27,10 +28,16 @@ app.use(express.static("public"));
 app.use(layouts);
 app.use(
   express.urlencoded({
+      //middle function 
     extended: false
   })
 );
-app.use(express.json());
+/*
+
+modules act as middle between your request being received and 
+processed fully with express.js 
+*/
+app.use(express.json()); //needed to parase the body of a request middlware function
 
 app.get('', (req, res) => {
 
