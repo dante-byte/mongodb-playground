@@ -32,6 +32,11 @@ app.use(
 );
 app.use(express.json());
 
+app.get('', (req, res) => {
+
+    res.send('Express Application Running')
+})
+
 
 
 
@@ -47,6 +52,19 @@ app.get('/subscribers', subscribersController.getAllSubscribers, (req, res, next
         subscribers: req.data
     })
 })
+
+app.get("/contact", subscribersController.getSubscriptionPage);
+app.post("/subscribe", subscribersController.saveSubscriber);
+
+
+
+
+
+
+
+
+
+
 
 app.listen(3000,()=> {
 console.log(`server started on port ${app.get("port")}`); 
